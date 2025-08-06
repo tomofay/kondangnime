@@ -1,11 +1,18 @@
-"use client";
+'use client';
 import { Button } from '@heroui/react';
 import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Supaya theme hanya dipakai di client, bukan SSR
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <nav className="flex justify-between items-center py-4 px-6 bg-dark-surface-2 shadow-md">
@@ -17,18 +24,6 @@ export default function Navbar() {
         <Button as={Link} href="/browse" className="bg-transparent hover:bg-anime-primary/10 text-white">Browse</Button>
         <Button as={Link} href="/search" className="bg-transparent hover:bg-anime-primary/10 text-white">Search</Button>
 
-        <Button
-          isIconOnly
-          variant="ghost"
-          className="ml-2"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        >
-          {theme === "dark" ? (
-            <SunIcon className="h-5 w-5 text-yellow-300" />
-          ) : (
-            <MoonIcon className="h-5 w-5 text-anime-primary" />
-          )}
-        </Button>
       </div>
     </nav>
   );
